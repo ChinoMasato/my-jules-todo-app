@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Simple TODO App</title>
+  <title>シンプルなTODOアプリ</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,6 +11,11 @@
       margin-top: 50px;
     }
     input#taskInput {
+      padding: 10px;
+      margin-right: 10px;
+      font-size: 16px;
+    }
+    input#assigneeInput {
       padding: 10px;
       margin-right: 10px;
       font-size: 16px;
@@ -40,14 +45,16 @@
 </head>
 <body>
   <h1>Simple TODO App</h1>
-  <input type="text" id="taskInput" placeholder="Enter your task">
-  <button id="addButton">Add Task</button>
+  <input type="text" id="taskInput" placeholder="タスクを入力">
+  <input type="text" id="assigneeInput" placeholder="担当者を入力">
+  <button id="addButton">追加</button>
   <ul id="taskList">
     <!-- Tasks will be added here -->
   </ul>
 
   <script>
     const taskInput = document.getElementById('taskInput');
+    const assigneeInput = document.getElementById('assigneeInput');
     const addButton = document.getElementById('addButton');
     const taskList = document.getElementById('taskList');
 
@@ -57,8 +64,14 @@
         return;
       }
 
+      const assigneeText = assigneeInput.value.trim();
       const li = document.createElement('li');
-      li.textContent = taskText;
+
+      if (assigneeText !== '') {
+        li.textContent = `タスク: ${taskText} (担当: ${assigneeText})`;
+      } else {
+        li.textContent = `タスク: ${taskText}`;
+      }
 
       li.addEventListener('click', () => {
         li.classList.toggle('completed');
@@ -66,6 +79,7 @@
 
       taskList.appendChild(li);
       taskInput.value = '';
+      assigneeInput.value = '';
     }
 
     addButton.addEventListener('click', addTask);
